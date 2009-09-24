@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Piing</name>
+  <coder>BHSPitMonkey</coder>
+  <version>0.1alpha</version>
+  <release_date>200908</release_date>
+  <short_description>Pong game for the Wii.</short_description>
+  <long_description>
+It's pong!
+
+Hold remote upright to play.
+D-pad moves the player.
+Remote 2 can use + to toggle A.I.
+</long_description>
+</app>

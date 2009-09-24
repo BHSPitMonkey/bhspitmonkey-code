@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Piing</name>
+  <coder>BHSPitMonkey</coder>
+  <version>0.1git</version>
+  <release_date>200909</release_date>
+  <short_description>Simple pong-like game.</short_description>
+  <long_description>
+Hold remote upright to play.
+D-pad moves the player.
+Remote #2 can use + to toggle A.I. on and off.
+</long_description>
+</app>

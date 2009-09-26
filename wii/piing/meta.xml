@@ -2,12 +2,15 @@
 <app version="1">
   <name>Piing</name>
   <coder>BHSPitMonkey</coder>
-  <version>0.1git</version>
+  <version>0.2</version>
   <release_date>200909</release_date>
   <short_description>Simple pong-like game.</short_description>
   <long_description>
+First player to 15 points wins!
+
+Controls:
 Hold remote upright to play.
 D-pad moves the player.
-Remote #2 can use + to toggle A.I. on and off.
+Remote #2 can use + to toggle A.I. off and on.
 </long_description>
 </app>

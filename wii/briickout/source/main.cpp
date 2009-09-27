@@ -1,7 +1,7 @@
 /*
  *      main.cpp
  * 
- * 		Briicks
+ * 		Briickout
  * 		A very simple Breakout-style game for the Wii.
  *      
  *      Copyright 2009 Stephen Eisenhauer <mail@stepheneisenhauer.com>

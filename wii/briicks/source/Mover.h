@@ -23,9 +23,9 @@ public:
 	Mover();		// default constructor
 	~Mover();		// destructor
 
-	// Initializers
+	// Initializer
 
-	void spawn(Rectangle rect, GXColor color, int xmin=0, int xmax=640, int x=320, int y=240);
+	void spawn(Rectangle rect, GXColor color, int x=320, int y=240);
 
 	// Accessors
 
@@ -35,7 +35,7 @@ public:
 	int getYcoord();
 	Rectangle * getRect();
 
-	// Mover operations
+	// Operations
 
 	void horizontalBounce();	// Reverses X movement
 	void verticalBounce();		// Reverses Y movement
@@ -53,13 +53,10 @@ protected:
 	float x_veloc;
 	float y_veloc;
 
-	// Variables to hold x position bounds
-	int x_min;
-	int x_max;
-   
+	// Drawing objects
 	Rectangle theRect;
 	Quad theQuad;
 
-};  // end class
+};
 
 #endif

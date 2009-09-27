@@ -19,10 +19,6 @@ Ball::Ball() {
 	theRect.width = 20;
 	theRect.height = 20;
 
-	// Set the bounding area for the Ball (represents the entire screen)
-	x_min = 0;
-	x_max = 640;
-
 	// The Ball should be white
 	theQuad.SetFillColor((GXColor){ 255, 255, 255, 255 });
 }
@@ -31,15 +27,15 @@ Ball::Ball() {
 Ball::~Ball() { }
 
 // Reset the ball's location and speed
-void Ball::spawn(float initialXVelocity) {
+void Ball::spawn(int playerXcoord) {
 
 	// Reset the Ball's position (centered)
-	x_coord = 320 - (theRect.width/2);
-	y_coord = 240 - (theRect.height/2);
+	x_coord = playerXcoord + 32 - 10;
+	y_coord = 260;
 
 	// Reset the Ball's velocity (horizontal, with passed X velocity)
-	x_veloc = initialXVelocity;
-	y_veloc = 0;
+	x_veloc = 0;
+	y_veloc = 3;
 }
 
 // Call repeatedly to 'react' to player's paddle.
@@ -53,13 +49,22 @@ void Ball::deflectFromPlayer(Player * player) {
 	
 		if ( CollidesWith(player) ) {
 
-			horizontalBounce();
-			// Get some y velocity from player
-			y_veloc += player->getYveloc()/2;
+			verticalBounce();
+			// Get some x velocity from player
+			x_veloc += player->getXveloc()/2;
 
 			// Wait a while 'till the next collision
 			collisionTimer = 20;
 		}
 	}
 	else collisionTimer--;
+}
+
+void Ball::deflectFromBrick(Brick * brick) {
+
+	if ( !brick->isDead() && CollidesWith(brick) ) {
+
+		verticalBounce();	// Reverse ball direction.
+		brick->wasHit();		// Tell the brick it was hit.
+	}
 }

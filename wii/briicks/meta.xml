@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Briicks</name>
+  <coder>BHSPitMonkey</coder>
+  <version>0.1</version>
+  <release_date>200909</release_date>
+  <short_description>Simple Breakout clone</short_description>
+  <long_description>
+Break the bricks!
+
+Functionality is very basic right now. No power-ups yet, infinite lives.
+
+Controls:
+
+Hold remote upright to play.
+D-pad moves the player.
+Home button exits.
+</long_description>
+</app>

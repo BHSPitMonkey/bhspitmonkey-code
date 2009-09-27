@@ -9,6 +9,7 @@
 #include <wiisprite.h>
 #include "Mover.h"
 #include "Player.h"
+#include "Brick.h"
 
 #ifndef BALL_H
 #define BALL_H
@@ -20,16 +21,17 @@ public:
 
 	// Constructors and destructor
 
-	Ball();			// default constructor
-	~Ball();		// destructor
+	Ball();		// default constructor
+	~Ball();	// destructor
 
 	// Initializer
 
-	void spawn(float initialXVelocity);
+	void spawn(int playerXcoord);
 
 	// Operations
 
 	void deflectFromPlayer(Player * player);
+	void deflectFromBrick(Brick * brick);
 };
 
 #endif

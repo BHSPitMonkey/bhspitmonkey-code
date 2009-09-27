@@ -19,26 +19,26 @@ Mover::Mover() { }
 // Destructor
 Mover::~Mover() { }
 
-void Mover::spawn(Rectangle rect, GXColor color, int xmin, int xmax, int x, int y) {
+void Mover::spawn(Rectangle rect, GXColor color, int x, int y) {
 
-	x_coord = xmin + (xmax-xmin)/2;		// Remember where to draw this Mover.
-	y_coord = 240;		// Remember where to draw this Mover.
-	x_veloc = 0;		// Reset x velocity
-	y_veloc = 0;		// Reset y velocity
-	x_min = xmin;		// Mover's minimum X position
-	x_max = xmax;		// Mover's maximum X position
-	
+	x_coord = x;	// Remember where to draw this Mover.
+	y_coord = y;	// Remember where to draw this Mover.
+	x_veloc = 0;	// Reset x velocity.
+	y_veloc = 0;	// Reset y velocity.
+
 	theRect = rect;
 	theQuad.SetFillColor(color);
 }
 
-// Coordinate getters
+// Velocity getters
 float Mover::getXveloc() {
 	return x_veloc;
 }
 float Mover::getYveloc() {
 	return y_veloc;
 }
+
+// Position getters
 int Mover::getXcoord() {
 	return x_coord;
 }
@@ -51,13 +51,13 @@ Rectangle * Mover::getRect() {
 	return &theRect;
 }
 
-// Reverses horizontal velocity. Call this when we collide with the floor/ceiling.
+// Collision with top/bottom occurred
 void Mover::horizontalBounce() {
 	x_veloc = -x_veloc;
 	// TODO: Play a beep!
 }
 
-// Reverses vertical velocity. Call this when we collide with a paddle side.
+// Collision with top/bottom occurred
 void Mover::verticalBounce() {
 	y_veloc = -y_veloc;
 	// TODO: Play a beep!
@@ -95,33 +95,32 @@ bool Mover::CollidesWith(Rectangle * otherRect, int other_x, int other_y) {
 		return false;
 }
 
-// Draws this Mover
+// Draws the mover
 int Mover::Draw() {
 
-	// Return value.  Will be -1 for left wall collide, +1 for right wall, 0 otherwise
+	// Return value.  Will be -1 for bottom wall collide, 0 otherwise
 	int retValue = 0;
 
 	// Make sure mover doesn't leave TV screen (collide with edges)
-	if (x_coord > x_max) {			// Collided with screen right
-		x_coord = x_max;
+	if (x_coord+theRect.width > 640) {			// Collided with screen right
+		x_coord = 640-theRect.width;
 		horizontalBounce();
-		retValue = 1;
 	}
-	else if (x_coord < x_min) {		// Collided with screen left
-		x_coord = x_min;
+	else if (x_coord < 0) {		// Collided with screen left
+		x_coord = 0;
 		horizontalBounce();
-		retValue = -1;
 	}
-	if (y_coord > 480) {			// Collided with screen bottom
+	if (y_coord+theRect.height > 480) {			// Collided with screen bottom
 		y_coord = 480;
 		verticalBounce();
+		retValue = -1;
 	}
-	else if (y_coord < 0) {			// Collided with screen top
+	else if (y_coord < 0) {
 		y_coord = 0;
 		verticalBounce();
 	}
-
-	// Adjust the position, according to velocity.
+	
+	// Move the position, according to velocity.
 	x_coord += x_veloc;
 	y_coord += y_veloc;
 
@@ -130,7 +129,6 @@ int Mover::Draw() {
 	theRect.y = y_coord;
 	theQuad.SetRectangle(&theRect);
 
-	// Draw the Quad
 	theQuad.Draw();
 
 	return retValue;

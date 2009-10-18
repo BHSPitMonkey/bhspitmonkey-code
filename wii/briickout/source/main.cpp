@@ -24,6 +24,7 @@
 #include <wiisprite.h>
 #include "Player.h"
 #include "Ball.h"
+#include "bg_circles.h"
 
 // libwiisprite uses wsp as its namespace
 using namespace wsp;
@@ -36,8 +37,14 @@ int main(int argc, char **argv) {
 	// Create the game window and initalise the VIDEO subsystem
 	GameWindow gwd;
 	gwd.InitVideo();
-	
-	gwd.SetBackground((GXColor){ 0, 0, 0, 255 });
+
+	// Background
+	gwd.SetBackground((GXColor){ 33, 33, 33, 255 });
+	Image bgImage;
+	Sprite bgSprite;
+	bgImage.LoadImage(bg_circles, IMG_LOAD_TYPE_BUFFER);
+	bgSprite.SetImage(&bgImage);
+	bgSprite.SetPosition(0, 0);
 
 	// Initialise Wiimote
 	WPAD_Init();
@@ -46,15 +53,16 @@ int main(int argc, char **argv) {
 	Player firstPlayer;
 	firstPlayer.spawn();
 
-	// Create and spawn the ball near the player
+	// Create the ball
 	Ball theBall;
-	theBall.spawn(firstPlayer.getXcoord());
 
 	// Create/Load Bricks
 	Brick bricks[8][5];
 	for (int i=0; i<8; i++)
 		for (int j=0; j<5; j++)
 			bricks[i][j].spawn(20+(75*i), 20+(32*j));
+
+	bool paused = false;
 
 	// This is the game's run loop. It is executed several times per second.
 	while(1) {
@@ -65,41 +73,47 @@ int main(int argc, char **argv) {
 		// Handle controller events
 		if(WPAD_ButtonsDown(WPAD_CHAN_0)&WPAD_BUTTON_HOME)
 			break;
-		if(WPAD_ButtonsHeld(WPAD_CHAN_0)&WPAD_BUTTON_LEFT)
-			firstPlayer.pushLeft();
-		if(WPAD_ButtonsHeld(WPAD_CHAN_0)&WPAD_BUTTON_RIGHT)
-			firstPlayer.pushRight();
-
-		// Handle the objects
-		
-		// Draw the ball, and react if it reached the bottom of the screen.
-		if (theBall.Draw() == -1) {
-			// The player has failed!
-			theBall.spawn(firstPlayer.getXcoord());	// Respawn the ball
+		if (!paused) {
+			if(WPAD_ButtonsHeld(WPAD_CHAN_0)&WPAD_BUTTON_UP)
+				firstPlayer.pushLeft();
+			if(WPAD_ButtonsHeld(WPAD_CHAN_0)&WPAD_BUTTON_DOWN)
+				firstPlayer.pushRight();
 		}
+		if(WPAD_ButtonsDown(WPAD_CHAN_0)&WPAD_BUTTON_PLUS)
+			paused = !paused;
+		if(WPAD_ButtonsDown(WPAD_CHAN_0)&WPAD_BUTTON_2)
+			if (theBall.dead)
+				theBall.spawn(firstPlayer.getXcoord());
 
-		// Draw the first player
-		firstPlayer.Draw();
+		if (!paused) {
 
-		// Tell the ball where the player is, so that it can react
-		// if the two are touching.
-		theBall.deflectFromPlayer(&firstPlayer);
+			// Move the player
+			firstPlayer.Move();
 
-		// Draw, and deflect Ball from, all bricks. Also check 
-		// to see if the level is completed.
+			// Move and manage the ball, if the ball is alive
+			if (theBall.dead == false)		// If the ball is not dead...
+				if (theBall.Move() == -1)	// then draw the ball, and if it hits the bottom of the screen...
+					theBall.dead = true;	// then kill the ball.
+
+			// Tell the ball where the player is, so that it can react if the two are touching.
+			theBall.deflectFromPlayer(&firstPlayer);
+
+		} // end if !paused
+
+		// Draw the background picture
+		bgSprite.Draw();
+
+		// Draw, and deflect Ball from, all bricks. Also check to see if the level is completed.
 		bool allDead = true;				// Start by assuming all bricks are dead
 		for (int i=0; i<8; i++) {			// Then loop through each of the bricks...
 			for (int j=0; j<5; j++) {		// ... in both dimensions.
-
-				bricks[i][j].Draw();		// Draw this brick
+				bricks[i][j].Move();
 				theBall.deflectFromBrick(&bricks[i][j]);
 				if (!bricks[i][j].isDead())	// If this brick is alive...
 					allDead = false;		// then the level is unfinished.
+				bricks[i][j].Draw();		// Draw this brick
 			}
 		}
-		
-		// At this point, if any of the bricks were alive, allDead will
-		// be set to false now. If none were alive, allDead will still be true.
 
 		// If all bricks are dead, we move on to a new level.
 		if (allDead) {
@@ -112,11 +126,15 @@ int main(int argc, char **argv) {
 			// Respawn the Player
 			firstPlayer.spawn();
 
-			// Respawn the ball
-			theBall.spawn(firstPlayer.getXcoord());
+			// Disable the ball
+			theBall.dead = true;
 		}
 
-		// Draw the buffer to the screen and reset it.
+		if (theBall.dead == false)
+			theBall.Draw();			// Draw the ball
+		firstPlayer.Draw();			// Draw the first player
+
+		// Write the buffer to the screen and reset it
 		gwd.Flush();
 
 		// Increase our count of how many frames have been drawn.

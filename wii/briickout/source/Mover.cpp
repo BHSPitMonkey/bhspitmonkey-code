@@ -14,7 +14,16 @@
 using namespace wsp;
 
 // Default constructor
-Mover::Mover() { }
+Mover::Mover() {
+
+	// Defaults
+	max_x_speed = 30;
+	max_y_speed = 30;
+
+	// Set up the gloss quad
+	gloss = true;
+	glossQuad.SetFillColor((GXColor){ 255, 255, 255, 127 });
+}
 
 // Destructor
 Mover::~Mover() { }
@@ -28,6 +37,9 @@ void Mover::spawn(Rectangle rect, GXColor color, int x, int y) {
 
 	theRect = rect;
 	theQuad.SetFillColor(color);
+
+	glossQuad.SetHeight(rect.height / 2.0);
+	glossQuad.SetWidth(rect.width);
 }
 
 // Velocity getters
@@ -95,8 +107,8 @@ bool Mover::CollidesWith(Rectangle * otherRect, int other_x, int other_y) {
 		return false;
 }
 
-// Draws the mover
-int Mover::Draw() {
+// Reposition the mover
+int Mover::Move() {
 
 	// Return value.  Will be -1 for bottom wall collide, 0 otherwise
 	int retValue = 0;
@@ -119,7 +131,17 @@ int Mover::Draw() {
 		y_coord = 0;
 		verticalBounce();
 	}
-	
+
+	// Enforce the speed limit
+	if (x_veloc > max_x_speed)
+		x_veloc = max_x_speed;
+	else if (x_veloc < -max_x_speed)
+		x_veloc = -max_x_speed;
+	if (y_veloc > max_y_speed)
+		y_veloc = max_y_speed;
+	else if (y_veloc < -max_y_speed)
+		y_veloc = -max_y_speed;
+
 	// Move the position, according to velocity.
 	x_coord += x_veloc;
 	y_coord += y_veloc;
@@ -129,7 +151,22 @@ int Mover::Draw() {
 	theRect.y = y_coord;
 	theQuad.SetRectangle(&theRect);
 
-	theQuad.Draw();
+	// Redefine the gloss quad according to the new position
+	if (gloss) {
+		glossQuad.SetPosition(x_coord, y_coord);
+		glossQuad.SetHeight( theQuad.GetHeight() / 2.0 );
+		glossQuad.SetWidth( theQuad.GetWidth() );
+	}
 
 	return retValue;
+}
+
+// Draws the mover
+void Mover::Draw() {
+
+	theQuad.Draw();
+
+	// Draw the gloss effect
+	if (gloss)
+		glossQuad.Draw();
 }

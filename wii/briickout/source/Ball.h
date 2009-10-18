@@ -32,6 +32,13 @@ public:
 
 	void deflectFromPlayer(Player * player);
 	void deflectFromBrick(Brick * brick);
+
+	int Move();
+	
+	// Properties
+	
+	bool dead;
+	bool unstoppable;
 };
 
 #endif

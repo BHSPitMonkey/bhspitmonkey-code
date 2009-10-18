@@ -41,7 +41,12 @@ public:
 	void verticalBounce();		// Reverses Y movement
 	bool CollidesWith(Mover * otherMover);
 	bool CollidesWith(Rectangle * otherRect, int other_x=0, int other_y=0);
-	int Draw();					// Recalculate position and redraw
+	int Move();					// Recalculate position
+	void Draw();
+
+	// Properties
+
+	bool gloss;		// True if object should appear glossy
 
 protected:
 
@@ -52,10 +57,13 @@ protected:
 	// Variables to hold current velocity
 	float x_veloc;
 	float y_veloc;
+	float max_x_speed;
+	float max_y_speed;
 
 	// Drawing objects
 	Rectangle theRect;
 	Quad theQuad;
+	Quad glossQuad;
 
 };
 

@@ -21,6 +21,11 @@ Brick::Brick() {
 	
 	x_veloc = 0;
 	y_veloc = 0;
+
+	// Set up the gloss quad
+	//glossQuad.SetFillColor((GXColor){ 255, 255, 255, 127 });
+	//glossQuad.SetHeight(10);
+	//glossQuad.SetWidth(64);
 }
 
 // Constructor + Spawn at (x,y)
@@ -46,6 +51,9 @@ void Brick::spawn(int x, int y) {
 	int g = 100 + rand()%155;
 	int b = 100 + rand()%155;
 	theQuad.SetFillColor((GXColor){ r, g, b, 255 });
+
+	// Set up the gloss quad
+	// glossQuad.SetPosition(x, y);
 }
 
 // Returns True if the brick is dead
@@ -63,6 +71,8 @@ void Brick::wasHit() {
 // Draw the brick (if it's alive)
 void Brick::Draw() {
 
-	if (!dead)
-		Mover::Draw();
+	if (!dead) {
+		Mover::Draw();		// Call superclass's Draw()
+		// glossQuad.Draw();	// Draw the gloss
+	}
 }

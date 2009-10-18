@@ -34,7 +34,7 @@ public:
 	void pushUp();
 	void pushDown();
 
-	void Draw();
+	void Move();
 };
 
 #endif

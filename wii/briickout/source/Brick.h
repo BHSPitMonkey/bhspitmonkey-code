@@ -39,6 +39,7 @@ public:
 protected:
 
 	bool dead;
+	// Quad glossQuad;
 
 };
 

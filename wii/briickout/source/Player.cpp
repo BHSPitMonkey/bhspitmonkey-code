@@ -18,8 +18,11 @@ Player::Player() {
 	theRect.width = 64;
 	theRect.height = 20;
 
-	// Players should be green
-	theQuad.SetFillColor((GXColor){ 0, 255, 0, 255 });
+	// Player's y position (never changes)
+	y_coord = 440;
+
+	// Player should be gray
+	theQuad.SetFillColor((GXColor){ 100, 100, 100, 255 });
 }
 
 // Destructor
@@ -30,31 +33,31 @@ void Player::spawn() {
 
 	// Default position for a Player (centered)
 	x_coord = 320; // - (theRect.width/2);
-	y_coord = 460;
 
 	// Reset Player velocity to 0
 	x_veloc = 0;
 	y_veloc = 0;
+
+	max_x_speed = 30;
 }
 
 // Moves the player left
 void Player::pushLeft() {
-	if (x_veloc > -30)
-		x_veloc--;
+	x_veloc--;
 }
 
 // Moves the player right
 void Player::pushRight() {
-	if (x_veloc < 30)
-		x_veloc++;
+	x_veloc++;
 }
 
-// Draws the player
-void Player::Draw() {
+// Reposition the player
+void Player::Move() {
 
 	// Bring velocity down (closer to zero) each tick.
 	if (x_veloc < 0) x_veloc += 0.25;
 	if (x_veloc > 0) x_veloc -= 0.25;
 
-	Mover::Draw();
+	Mover::Move();
 }
+

@@ -2,8 +2,8 @@
 <app version="1">
   <name>Briickout</name>
   <coder>BHSPitMonkey</coder>
-  <version>0.1</version>
-  <release_date>200909</release_date>
+  <version>0.2</version>
+  <release_date>200910180000</release_date>
   <short_description>Simple Breakout clone</short_description>
   <long_description>
 Break the bricks!
@@ -12,8 +12,22 @@ Functionality is very basic right now. No power-ups yet, infinite lives.
 
 Controls:
 
-Hold remote upright to play.
-D-pad moves the player.
-Home button exits.
+Hold remote sideways to play.
+(D-pad) Move
+(2) Spawn a new ball
+(+) Pause
+(Home) Exit to loader
+
+Changelog:
+
+Version 0.2:
+ - Sexy new graphics
+ - Visual ball spin effect
+ - Pause functionality
+ - Ball waits for user input before appearing
+ - Code cleanup
+ 
+Version 0.1:
+ - Initial release
 </long_description>
 </app>

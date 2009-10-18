@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<app version="1">
+  <name>Helii</name>
+  <coder>BHSPitMonkey</coder>
+  <version>0.2</version>
+  <release_date>200910</release_date>
+  <short_description>Pilot a helicopter!</short_description>
+  <long_description>
+Controls:
+
+(A) Fly (Or start the level)
+(+) Pause (Or setup a new game after crashing)
+(Home) Exit to loader
+
+Todo:
+
+- Scores
+- Sound
+- Menus
+
+Changelog:
+
+0.2 - Obstacles; Unique cave shaping.
+</long_description>
+</app>
